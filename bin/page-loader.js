@@ -2,7 +2,7 @@
 
 import { program } from 'commander';
 
-const app = () => {
+const app = async () => {
   program
     .name('page-loader')
     .description('Page loader utility')
@@ -11,7 +11,7 @@ const app = () => {
     .option('-o, --option [dir]', 'output dir', '/home/user/current-dir')
     .arguments('<url>')
     .action((url) => {
-      console.log(program.opts().option);
+      console.log(url);
     });
 
   program.parse(process.argv);

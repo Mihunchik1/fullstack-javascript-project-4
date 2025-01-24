@@ -4,14 +4,14 @@
   "type": "module",
   "description": "The application is a library for downloading internet pages to your device.",
   "main": "index.js",
-  "bin": {
-    "page-loader": "bin/page-loader.js"
-  },
-  "scripts": {
+    "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mihunchik1",
   "license": "ISC",
+  "bin": {
+    "page-loader": "bin/page-loader.js"
+  },
   "dependencies": {
     "commander": "^13.1.0"
   }
