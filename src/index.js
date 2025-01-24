@@ -19,7 +19,9 @@ export default (url) => {
 
   promise
     .then((data) => {
-      fs.writeFile(fileName, data);
+      return fs.writeFile(fileName, data);
+    })
+    .then(() => {
       console.log(fileName);
     })
     .catch((rej) => {
