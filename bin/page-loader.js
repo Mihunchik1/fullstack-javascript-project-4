@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
+import pageLoader from '../src/index.js';
 
 const app = async () => {
   program
@@ -11,7 +12,7 @@ const app = async () => {
     .option('-o, --option [dir]', 'output dir', '/home/user/current-dir')
     .arguments('<url>')
     .action((url) => {
-      console.log(url);
+      pageLoader(url);
     });
 
   program.parse(process.argv);
