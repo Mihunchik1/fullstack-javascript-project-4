@@ -1,5 +1,5 @@
 import axios from "axios";
-import fs from 'fs';
+import fs from 'fs/promises';
 
 const createFileName = (url) => {
   const urlWithoutProtocol = url.split('//')[1];
@@ -19,9 +19,8 @@ export default (url) => {
 
   promise
     .then((data) => {
-      fs.writeFile(fileName, data, () => {
-        console.log(fileName)
-      });
+      fs.writeFile(fileName, data);
+      console.log(fileName);
     })
     .catch((rej) => {
       console.log(rej)
