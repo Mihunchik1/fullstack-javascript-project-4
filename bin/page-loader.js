@@ -12,7 +12,7 @@ const app = async () => {
     .option('-o, --option [dir]', 'output dir', '/home/user/current-dir')
     .arguments('<url>')
     .action((url) => {
-      pageLoader(url);
+      pageLoader(url, program.opts().option);
     });
 
   program.parse(process.argv);

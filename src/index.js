@@ -7,7 +7,7 @@ const createFileName = (url) => {
   return result;
 }
 
-export default (url) => {
+export default (url, option = '/home/user/current-dir') => {
   const promise = new Promise((resolve, reject) => {
     axios.get(url)
       .then((response) => {
@@ -15,14 +15,24 @@ export default (url) => {
       });
   });
 
+  const currentDirectory = process.cwd();
+
   const fileName = createFileName(url);
 
+  if (option === '/home/user/current-dir') {
+    option = '/';
+  }
+  else {
+    option = option + '/'
+  }
+  const path = currentDirectory + option + fileName;
+  
   promise
     .then((data) => {
-      return fs.writeFile(fileName, data);
+      return fs.writeFile(path, data);
     })
     .then(() => {
-      console.log(fileName);
+      console.log(path);
     })
     .catch((rej) => {
       console.log(rej)
