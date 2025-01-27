@@ -1,5 +1,6 @@
 import axios from "axios";
 import fs from 'fs/promises';
+import path from "path";
 
 const createFileName = (url) => {
   const urlWithoutProtocol = url.split('//')[1];
@@ -8,33 +9,26 @@ const createFileName = (url) => {
 }
 
 export default (url, option = '/home/user/current-dir') => {
-  const promise = new Promise((resolve, reject) => {
-    axios.get(url)
-      .then((response) => {
-        resolve(response.data);
-      });
-  });
+
+  const promise = axios.get(url)
+    .then(response => response.data)
+    .catch(error => {
+      console.error(error);
+    });
 
   const currentDirectory = process.cwd();
-
   const fileName = createFileName(url);
 
-  if (option === '/home/user/current-dir') {
-    option = '/';
-  }
-  else {
-    option = option + '/'
-  }
-  const path = currentDirectory + option + fileName;
+  const outputPath = option === '/home/user/current-dir' ? path.join(currentDirectory, fileName) : path.join(currentDirectory + option, fileName);
   
   promise
     .then((data) => {
-      return fs.writeFile(path, data);
+      return fs.writeFile(outputPath, data);
     })
     .then(() => {
-      console.log(path);
+      console.log(outputPath);
     })
-    .catch((rej) => {
-      console.log(rej)
+    .catch((error) => {
+      console.error(error);
     });
 }
