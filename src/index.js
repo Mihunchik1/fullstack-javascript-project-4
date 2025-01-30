@@ -20,12 +20,5 @@ export default (url, option = '/home/user/current-dir') => {
     .then(() => {
       console.log(outputPath);
     })
-    .catch((err) => {
-      if (err.code === 'ENOENT') {
-        console.error('dir is not exist');
-      } else {
-        console.error(err);
-      }
-      return Promise.reject(err);
-    });
+    .catch((err) => Promise.reject(err));
 };

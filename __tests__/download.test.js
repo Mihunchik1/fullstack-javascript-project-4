@@ -31,6 +31,17 @@ describe('file is downloaded', () => {
     expect(fileContent).toBe(testData);
   });
 
+  // test('file not defined', async () => {
+  //   const badURL = 'https://exampledlqqd/dadaw.com';
+  //   await pageLoader(badURL, tempDir);
+
+  //   const fileName = createFileName(url);
+  //   const outputPath = path.join(tempDir, fileName);
+
+  //   const fileExists = await fs.access(outputPath).then(() => true).catch(() => false);
+  //   expect(fileExists).toBe(false);
+  // });
+
   afterAll(async () => {
     await fs.rmdir(tempDir, { recursive: true });
 
