@@ -8,7 +8,7 @@ import pageLoader, { createFileName } from '../src/index.js';
 describe('file is downloaded', () => {
   let tempDir;
   const url = 'https://example.com';
-  const testData = '<html><body>Example</body></html>';
+  const testData = '<html><head></head><body>example</body></html>';
 
   beforeAll(async () => {
     tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'page-loader-'));
@@ -19,7 +19,6 @@ describe('file is downloaded', () => {
   });
 
   test('file has been created and the content matches', async () => {
-
     await pageLoader(url, tempDir);
 
     const fileName = createFileName(url);
