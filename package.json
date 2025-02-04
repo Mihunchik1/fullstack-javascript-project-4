@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "The application is a library for downloading internet pages to your device.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "jest --coverage",
     "coverage": "jest --coverage"
@@ -16,6 +16,7 @@
   "dependencies": {
     "@jest/globals": "^29.7.0",
     "axios": "^1.7.9",
+    "cheerio": "^1.0.0",
     "commander": "^13.1.0"
   },
   "devDependencies": {

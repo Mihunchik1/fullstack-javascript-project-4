@@ -1,24 +1,19 @@
-import axios from 'axios';
 import fs from 'fs/promises';
 import path from 'path';
-
-export const createFileName = (url) => {
-  const urlWithoutProtocol = url.split('//')[1];
-  const result = `${urlWithoutProtocol.replace(/[^\w]/g, '-')}.html`;
-  return result;
-};
+import downloadHtml from './modules/downloaderHtml.js';
+import downloadImages from './modules/downloaderImages.js';
+import createHtmlName from './modules/createHtmlName.js';
+// продумать функцию замены (возможно она подойдет и под остальные ресурсы)
 
 export default (url, option = '/home/user/current-dir') => {
   const currentDirectory = process.cwd();
-  const fileName = createFileName(url);
-  const outputPath = option === '/home/user/current-dir' ? path.join(currentDirectory, fileName) : path.join(option, fileName);
+  const htmlName = createHtmlName(url);
+  const outputPath = option === '/home/user/current-dir' ? path.join(currentDirectory, htmlName) : path.join(option, htmlName);
   const dirPath = path.dirname(outputPath);
 
-  return fs.access(dirPath, fs.constants.F_OK)
-    .then(() => axios.get(url))
-    .then((response) => fs.writeFile(outputPath, response.data))
-    .then(() => {
-      console.log(outputPath);
-    })
+  return downloadHtml(url, option)
+    .then(() => fs.readFile(outputPath, 'utf-8'))
+    .then((textFile) => downloadImages(textFile, url, dirPath))
+    .then(() => console.log(outputPath))
     .catch((err) => Promise.reject(err));
 };
