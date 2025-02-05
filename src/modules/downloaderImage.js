@@ -1,7 +1,7 @@
 import axios from 'axios';
 import path from 'path';
 import fs from 'fs/promises';
-import createImageName from './createImageName.js';
+import createImageName from './workWithNames/createImageName.js';
 
 export default (link, dir) => {
   link = 'https://i.postimg.cc/ncTCTjzC/Yy4e-YUYQo-DU.jpg';

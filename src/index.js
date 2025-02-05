@@ -2,8 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import downloadHtml from './modules/downloaderHtml.js';
 import downloadImages from './modules/downloaderImages.js';
-import createHtmlName from './modules/createHtmlName.js';
-// продумать функцию замены (возможно она подойдет и под остальные ресурсы)
+import createHtmlName from './modules/workWithNames/createHtmlName.js';
+import imageReplacement from './modules/imageReplacement.js';
 
 export default (url, option = '/home/user/current-dir') => {
   const currentDirectory = process.cwd();
@@ -13,7 +13,8 @@ export default (url, option = '/home/user/current-dir') => {
 
   return downloadHtml(url, option)
     .then(() => fs.readFile(outputPath, 'utf-8'))
-    .then((textFile) => downloadImages(textFile, url, dirPath))
+    .then((html) => downloadImages(html, url, dirPath))
+    .then((htmlAndLinksAndUrl) => imageReplacement(htmlAndLinksAndUrl, outputPath))
     .then(() => console.log(outputPath))
     .catch((err) => Promise.reject(err));
 };

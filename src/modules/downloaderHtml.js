@@ -1,7 +1,7 @@
 import axios from 'axios';
 import fs from 'fs/promises';
 import path from 'path';
-import createFileName from './createHtmlName.js';
+import createFileName from './workWithNames/createHtmlName.js';
 
 export default (url, option = '/home/user/current-dir') => {
   const currentDirectory = process.cwd();
