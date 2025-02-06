@@ -12,7 +12,6 @@ export default (link, dir) => {
     filename = createHtmlName(link);
     link += '.html';
   }
-  console.log(link);
   const filesExtensions = ['.html', '.js', '.css'];
   if (!filesExtensions.includes(extension)) {
     return axios.get(link, {

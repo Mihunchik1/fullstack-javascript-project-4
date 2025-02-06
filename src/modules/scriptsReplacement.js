@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import path from 'path';
 import fs from 'fs/promises';
-import createImageName from './workWithNames/createFileName.js';
+import createFileName from './workWithNames/createFileName.js';
 import createDirName from './workWithNames/createDirName.js';
 
 export default (htmlAndLinksAndUrl, outputPath) => {
@@ -22,9 +22,9 @@ export default (htmlAndLinksAndUrl, outputPath) => {
 
   const dirName = createDirName(url);
 
-  processedLinks = processedLinks.map((link) => `${path.join(dirName, createImageName(link))}`);
+  processedLinks = processedLinks.map((link) => `${path.join(dirName, createFileName(link))}`);
 
-  $('img[src]').each((index, el) => {
+  $('script[src]').each((index, el) => {
     const src = $(el).attr('src');
 
     const validLInksIndex = validLinks.indexOf(src);
