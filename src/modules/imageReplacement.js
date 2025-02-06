@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import path from 'path';
 import fs from 'fs/promises';
-import createImageName from './workWithNames/createImageName.js';
+import createImageName from './workWithNames/createFileName.js';
 import createDirName from './workWithNames/createDirName.js';
 
 export default (htmlAndLinksAndUrl, outputPath) => {
@@ -10,7 +10,7 @@ export default (htmlAndLinksAndUrl, outputPath) => {
   let url;
 
   if (htmlAndLinksAndUrl) {
-    [html, validLinks, url] = htmlAndLinksAndUrl;
+    [html, validLinks, url] = htmlAndLinksAndUrl; // если чего то нет то вылетит undefined
   }
   const $ = cheerio.load(html);
   let processedLinks = validLinks.map((link) => {
