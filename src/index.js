@@ -1,13 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
 import downloadHtml from './modules/downloaderHtml.js';
-import downloaderImages from './modules/downloaderImages.js';
+import downloaderResource from './modules/downloaderResource.js';
 import createHtmlName from './modules/workWithNames/createHtmlName.js';
-import imagesReplacement from './modules/imagesReplacement.js';
-import downloaderLinks from './modules/downloaderLinks.js';
-import linksReplacement from './modules/linksReplacement.js';
-import downloaderScripts from './modules/downloaderScripts.js';
-import scriptsReplacement from './modules/scriptsReplacement.js';
+import replaceItems from './modules/replacerItems.js';
 
 export default (url, option = '/home/user/current-dir') => {
   const currentDirectory = process.cwd();
@@ -15,16 +11,19 @@ export default (url, option = '/home/user/current-dir') => {
   const outputPath = option === '/home/user/current-dir' ? path.join(currentDirectory, htmlName) : path.join(option, htmlName);
   const dirPath = path.dirname(outputPath);
 
-  return downloadHtml(url, option)
+  return downloadHtml(url, outputPath, dirPath)
     .then(() => fs.readFile(outputPath, 'utf-8'))
-    .then((html) => downloaderImages(html, url, dirPath))
-    .then((htmlAndLinksAndUrl) => imagesReplacement(htmlAndLinksAndUrl, outputPath))
+    .then((html) => downloaderResource(html, url, dirPath, 'img'))
+    .then((htmlAndLinksAndUrlAndTag) => replaceItems(htmlAndLinksAndUrlAndTag, outputPath))
     .then(() => fs.readFile(outputPath, 'utf-8'))
-    .then((html) => downloaderLinks(html, url, dirPath))
-    .then((htmlAndLinksAndUrl) => linksReplacement(htmlAndLinksAndUrl, outputPath))
+    .then((html) => downloaderResource(html, url, dirPath, 'link'))
+    .then((htmlAndLinksAndUrlAndTag) => replaceItems(htmlAndLinksAndUrlAndTag, outputPath))
     .then(() => fs.readFile(outputPath, 'utf-8'))
-    .then((html) => downloaderScripts(html, url, dirPath))
-    .then((htmlAndLinksAndUrl) => scriptsReplacement(htmlAndLinksAndUrl, outputPath))
+    .then((html) => downloaderResource(html, url, dirPath, 'script'))
+    .then((htmlAndLinksAndUrlAndTag) => replaceItems(htmlAndLinksAndUrlAndTag, outputPath))
     .then(() => console.log(outputPath))
-    .catch((err) => Promise.reject(err));
+    .catch((err) => {
+      console.error('An error occurred:', err.message);
+      process.exit(1);
+    });
 };

@@ -1,16 +1,14 @@
 import axios from 'axios';
 import fs from 'fs/promises';
-import path from 'path';
-import createFileName from './workWithNames/createHtmlName.js';
 
-export default (url, option = '/home/user/current-dir') => {
-  const currentDirectory = process.cwd();
-  const fileName = createFileName(url);
-  const outputPath = option === '/home/user/current-dir' ? path.join(currentDirectory, fileName) : path.join(option, fileName);
-  const dirPath = path.dirname(outputPath);
-
+export default (url, outputPath, dirPath) => {
+  if (!url || !outputPath || !dirPath) {
+    throw new Error('Invalid input data');
+  }
   return fs.access(dirPath, fs.constants.F_OK)
     .then(() => axios.get(url))
     .then((response) => fs.writeFile(outputPath, response.data))
-    .catch((err) => Promise.reject(err));
+    .catch((err) => {
+      throw new Error(`Failed to download HTML: ${err.message}`);
+    });
 };
