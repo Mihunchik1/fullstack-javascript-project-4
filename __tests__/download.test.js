@@ -1,9 +1,13 @@
-import { test, expect, beforeAll, afterAll, describe } from '@jest/globals';
+import {
+  test, expect, beforeAll, afterAll, describe,
+} from '@jest/globals';
 import fs from 'fs/promises';
 import path from 'path';
 import os from 'os';
 import nock from 'nock';
-import pageLoader, { createFileName } from '../src/index.js';
+import pageLoader from '../src/index.js';
+import createHtmlName from '../src/modules/workWithNames/createHtmlName.js';
+import downloaderHtml from '../src/modules/downloaderHtml.js';
 
 describe('file is downloaded', () => {
   let tempDir;
@@ -21,7 +25,7 @@ describe('file is downloaded', () => {
   test('file has been created and the content matches', async () => {
     await pageLoader(url, tempDir);
 
-    const fileName = createFileName(url);
+    const fileName = createHtmlName(url);
     const outputPath = path.join(tempDir, fileName);
 
     const fileExists = await fs.access(outputPath).then(() => true).catch(() => false);
@@ -31,20 +35,19 @@ describe('file is downloaded', () => {
     expect(fileContent).toBe(testData);
   });
 
-  // test('file not defined', async () => {
-  //   const badURL = 'https://exampledlqqd/dadaw.com';
-  //   await pageLoader(badURL, tempDir);
-
-  //   const fileName = createFileName(url);
-  //   const outputPath = path.join(tempDir, fileName);
-
-  //   const fileExists = await fs.access(outputPath).then(() => true).catch(() => false);
-  //   expect(fileExists).toBe(false);
-  // });
+  test('invalid url', async () => {
+    const badUrl = 'fnkefs';
+    await expect(pageLoader(badUrl, tempDir)).rejects.toThrow('Invalid url');
+  });
 
   afterAll(async () => {
     await fs.rmdir(tempDir, { recursive: true });
 
     nock.cleanAll();
   });
+});
+
+test('downloader html get invalid url', async () => {
+  const badUrl = 'hawdohoawd';
+  await expect(downloaderHtml(badUrl, 'path', 'path')).rejects.toThrow();
 });

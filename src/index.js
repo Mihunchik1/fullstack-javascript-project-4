@@ -4,8 +4,12 @@ import downloadHtml from './modules/downloaderHtml.js';
 import downloaderResource from './modules/downloaderResource.js';
 import createHtmlName from './modules/workWithNames/createHtmlName.js';
 import replaceItems from './modules/replacerItems.js';
+import isValidUrl from './modules/validUrl.js';
 
 export default (url, option = '/home/user/current-dir') => {
+  if (!isValidUrl(url)) {
+    return Promise.reject(new Error('Invalid url'));
+  }
   const currentDirectory = process.cwd();
   const htmlName = createHtmlName(url);
   const outputPath = option === '/home/user/current-dir' ? path.join(currentDirectory, htmlName) : path.join(option, htmlName);
@@ -23,7 +27,6 @@ export default (url, option = '/home/user/current-dir') => {
     .then((htmlAndLinksAndUrlAndTag) => replaceItems(htmlAndLinksAndUrlAndTag, outputPath))
     .then(() => console.log(outputPath))
     .catch((err) => {
-      console.error('An error occurred:', err.message);
-      process.exit(1);
+      throw err;
     });
 };

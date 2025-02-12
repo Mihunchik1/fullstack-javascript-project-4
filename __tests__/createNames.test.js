@@ -1,7 +1,7 @@
 import { test, expect } from '@jest/globals';
-import createHtmlName from '../src/modules/createHtmlName.js';
-import createDirName from '../src/modules/createDirName.js';
-import createImageName from '../src/modules/createImageName.js';
+import createHtmlName from '../src/modules/workWithNames/createHtmlName.js';
+import createDirName from '../src/modules/workWithNames/createDirName.js';
+import createFileName from '../src/modules/workWithNames/createFileName.js';
 
 const url = 'https://example.com';
 
@@ -18,5 +18,5 @@ test('proper dirname change', () => {
 test('proper image name change', () => {
   const imageName = 'https://i.postimg.cc/ncTCTjzC/Yy4e-YUYQo-DU.jpg';
   const result = 'i-postimg-cc-ncTCTjzC-Yy4e-YUYQo-DU.jpg';
-  expect(createImageName(imageName)).toEqual(result);
+  expect(createFileName(imageName)).toEqual(result);
 });
