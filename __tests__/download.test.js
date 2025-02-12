@@ -40,6 +40,10 @@ describe('file is downloaded', () => {
     await expect(pageLoader(badUrl, tempDir)).rejects.toThrow('Invalid url');
   });
 
+  test('invalid options: no such file or directory', async () => {
+    await expect(pageLoader(url, '/undefinedDirectory')).rejects.toThrow();
+  });
+
   afterAll(async () => {
     await fs.rmdir(tempDir, { recursive: true });
 

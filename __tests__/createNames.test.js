@@ -20,3 +20,8 @@ test('proper image name change', () => {
   const result = 'i-postimg-cc-ncTCTjzC-Yy4e-YUYQo-DU.jpg';
   expect(createFileName(imageName)).toEqual(result);
 });
+
+test('should throw error invalid input', () => {
+  const emptyUrl = '';
+  expect(() => createFileName(emptyUrl)).toThrow('Invalid URL');
+});
