@@ -18,7 +18,6 @@ export default (url, option = '/home/user/current-dir') => {
   const outputPath = option === '/home/user/current-dir' ? path.join(currentDirectory, htmlName) : path.join(option, htmlName);
   const dirPath = path.dirname(outputPath);
 
-  // Функция для создания задач Listr
   const createTasks = (html) => new Listr(
     [
       {
@@ -49,7 +48,6 @@ export default (url, option = '/home/user/current-dir') => {
     { concurrent: true },
   );
 
-  // Основной процесс
   return downloadHtml(url, outputPath, dirPath)
     .then(() => fs.readFile(outputPath, 'utf-8'))
     .then((html) => {
