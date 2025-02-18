@@ -5,7 +5,7 @@
   "description": "The application is a library for downloading internet pages to your device.",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest --coverage",
+    "test": "DEBUG=page-loader*,nock*,axios:* NODE_DEBUG=nock:recorder jest --coverage",
     "coverage": "jest --coverage"
   },
   "author": "Mihunchik1",
@@ -16,8 +16,10 @@
   "dependencies": {
     "@jest/globals": "^29.7.0",
     "axios": "^1.7.9",
+    "axios-debug-log": "^1.0.0",
     "cheerio": "^1.0.0",
-    "commander": "^13.1.0"
+    "commander": "^13.1.0",
+    "debug": "^4.4.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.26.8",

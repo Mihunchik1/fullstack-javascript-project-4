@@ -4,6 +4,7 @@ import path from 'path';
 import * as cheerio from 'cheerio';
 import createDirName from './workWithNames/createDirName.js';
 import downloadItem from './downloaderItem.js';
+import { logWorkWithFiles } from '../../logger.js';
 
 export default (html, url, dirpath, tag) => {
   if (!html || !url || !dirpath || !tag) {
@@ -56,10 +57,14 @@ export default (html, url, dirpath, tag) => {
   return fs.access(outputPath)
     .catch(() => fs.mkdir(outputPath, { recursive: true }))
     .then(() => {
+      logWorkWithFiles(`downloadResource: start downloading resource ${tag}`);
       const downloadPromises = processedLinks.map((link) => downloadItem(link, outputPath));
       return Promise.all(downloadPromises);
     })
-    .then(() => [html, validLinks, url, tag])
+    .then(() => {
+      logWorkWithFiles(`downloadResource: end of downloading resource ${tag}`);
+      return [html, validLinks, url, tag];
+    })
     .catch((err) => {
       throw new Error(`Failed to download ${tag}s: ${err.message}`);
     });
