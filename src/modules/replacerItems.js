@@ -26,6 +26,9 @@ export default (htmlAndLinksAndUrlAndTag, outputPath) => {
 
   const $ = cheerio.load(html);
   let processedLinks = validLinks.map((link) => {
+    if (link.startsWith('.')) {
+      return `${url}/${link.split('/').slice(1).join('/')}`;
+    }
     if (link.startsWith('/')) {
       return `${url}${link}`;
     }

@@ -18,45 +18,36 @@ export default (url, option = '/home/user/current-dir') => {
   const outputPath = option === '/home/user/current-dir' ? path.join(currentDirectory, htmlName) : path.join(option, htmlName);
   const dirPath = path.dirname(outputPath);
 
-  const createTasks = (html) => new Listr(
-    [
-      {
-        title: 'Downloading images',
-        task: () => downloaderResource(html, url, dirPath, 'img')
-          .then((result) => replaceItems(result, outputPath))
-          .then((updatedHtml) => {
-            html = updatedHtml;
-          }),
-      },
-      {
-        title: 'Downloading styles',
-        task: () => downloaderResource(html, url, dirPath, 'link')
-          .then((result) => replaceItems(result, outputPath))
-          .then((updatedHtml) => {
-            html = updatedHtml;
-          }),
-      },
-      {
-        title: 'Downloading scripts',
-        task: () => downloaderResource(html, url, dirPath, 'script')
-          .then((result) => replaceItems(result, outputPath))
-          .then((updatedHtml) => {
-            html = updatedHtml;
-          }),
-      },
-    ],
-    { concurrent: true },
-  );
+  const tasks = new Listr([
+    {
+      title: 'Downloading HTML',
+      task: () => downloadHtml(url, outputPath, dirPath),
+    },
+    {
+      title: 'Processing images',
+      task: () => fs.readFile(outputPath, 'utf-8')
+        .then((html) => downloaderResource(html, url, dirPath, 'img'))
+        .then((htmlAndLinksAndUrlAndTag) => replaceItems(htmlAndLinksAndUrlAndTag, outputPath)),
+    },
+    {
+      title: 'Processing CSS links',
+      task: () => fs.readFile(outputPath, 'utf-8')
+        .then((html) => downloaderResource(html, url, dirPath, 'link'))
+        .then((htmlAndLinksAndUrlAndTag) => replaceItems(htmlAndLinksAndUrlAndTag, outputPath)),
+    },
+    {
+      title: 'Processing scripts',
+      task: () => fs.readFile(outputPath, 'utf-8')
+        .then((html) => downloaderResource(html, url, dirPath, 'script'))
+        .then((htmlAndLinksAndUrlAndTag) => replaceItems(htmlAndLinksAndUrlAndTag, outputPath)),
+    },
+    {
+      title: 'Successful!',
+      task: () => console.log(outputPath),
+    },
+  ]);
 
-  return downloadHtml(url, outputPath, dirPath)
-    .then(() => fs.readFile(outputPath, 'utf-8'))
-    .then((html) => {
-      const tasks = createTasks(html);
-      return tasks.run();
-    })
-    .then(() => {
-      console.log(outputPath);
-    })
+  return tasks.run()
     .catch((err) => {
       throw err;
     });

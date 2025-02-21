@@ -4,6 +4,7 @@ import path from 'path';
 import * as cheerio from 'cheerio';
 import createDirName from './workWithNames/createDirName.js';
 import downloadItem from './downloaderItem.js';
+import isValidLink from './filterLinks.js';
 import { logWorkWithFiles } from '../../logger.js';
 
 export default (html, url, dirpath, tag) => {
@@ -11,7 +12,6 @@ export default (html, url, dirpath, tag) => {
     throw new Error('Invalid input data');
   }
 
-  const urlHost = new URL(url).host;
   const $ = cheerio.load(html);
 
   let attribute;
@@ -37,7 +37,7 @@ export default (html, url, dirpath, tag) => {
   });
 
   const validLinks = links.length > 0
-    ? links.filter((el) => el.includes(urlHost) || el.startsWith('/'))
+    ? links.filter((el) => isValidLink(el, url))
     : [];
 
   if (!validLinks.length) {
@@ -48,8 +48,11 @@ export default (html, url, dirpath, tag) => {
   const outputPath = path.join(dirpath, dirName);
 
   const processedLinks = validLinks.map((link) => {
+    if (link.startsWith('.')) {
+      return `${url}/${link.split('/').slice(1).join('/')}`;
+    }
     if (link.startsWith('/')) {
-      return `${url + link}`;
+      return `${url}${link}`;
     }
     return link;
   });
