@@ -41,13 +41,10 @@ export default (url, option = '/home/user/current-dir') => {
         .then((html) => downloaderResource(html, url, dirPath, 'script'))
         .then((htmlAndLinksAndUrlAndTag) => replaceItems(htmlAndLinksAndUrlAndTag, outputPath)),
     },
-    {
-      title: 'Successful!',
-      task: () => console.log(outputPath),
-    },
   ]);
 
   return tasks.run()
+    .then(() => console.log(outputPath))
     .catch((err) => {
       throw err;
     });
