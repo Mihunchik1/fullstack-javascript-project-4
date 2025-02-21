@@ -27,10 +27,10 @@ export default (htmlAndLinksAndUrlAndTag, outputPath) => {
   const $ = cheerio.load(html);
   let processedLinks = validLinks.map((link) => {
     if (link.startsWith('.')) {
-      return `${url}/${link.split('/').slice(1).join('/')}`;
+      return `${url}/${link.split('/').slice(1).join('/')}`; // не знаю надо ли
     }
     if (link.startsWith('/')) {
-      return `${url}${link}`;
+      return `${url}${link}`; // и тут
     }
     return link;
   });

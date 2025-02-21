@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 /* eslint-disable no-shadow */
 import fs from 'fs/promises';
 import path from 'path';
@@ -12,6 +13,7 @@ export default (html, url, dirpath, tag) => {
     throw new Error('Invalid input data');
   }
 
+  const newUrl = new URL(url);
   const $ = cheerio.load(html);
 
   let attribute;
@@ -49,10 +51,10 @@ export default (html, url, dirpath, tag) => {
 
   const processedLinks = validLinks.map((link) => {
     if (link.startsWith('.')) {
-      return `${url}/${link.split('/').slice(1).join('/')}`;
+      return `${newUrl.protocol + '//' + newUrl.host}/${link.split('/').slice(1).join('/')}`;
     }
     if (link.startsWith('/')) {
-      return `${url}${link}`;
+      return `${newUrl.protocol + '//' + newUrl.host}${link}`;
     }
     return link;
   });
