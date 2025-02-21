@@ -16,6 +16,7 @@ export default (link, dir) => {
     // link += .html
   }
   const filesExtensions = ['.html', '.js', '.css'];
+  console.log(link);
   if (!filesExtensions.includes(extension)) {
     return axios.get(link, {
       responseType: 'arraybuffer',
@@ -23,7 +24,9 @@ export default (link, dir) => {
       .then((response) => fs.writeFile(path.join(dir, filename), response.data))
       .catch((err) => Promise.reject(err));
   }
-  return axios.get(link)
+  return axios.get(link, {
+    responseType: 'arraybuffer',
+  })
     .then((response) => fs.writeFile(path.join(dir, filename), response.data))
     .catch((err) => {
       throw new Error(`Failed to download ${link}: ${err.message}`);
