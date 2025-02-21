@@ -13,7 +13,7 @@ export default (link, dir) => {
   let filename = createFileName(link);
   if (extension === '') {
     filename = createHtmlName(link);
-    link += '.html';
+    // link += .html
   }
   const filesExtensions = ['.html', '.js', '.css'];
   if (!filesExtensions.includes(extension)) {
