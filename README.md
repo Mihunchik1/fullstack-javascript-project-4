@@ -26,3 +26,12 @@ Welcome to the *Page loader* utility. This library will help you download an Int
 ```
 page-loader -h
 ```
+
+## Example of work
+[![asciicast](https://asciinema.org/a/6Q7nBIRa9ZLHTjecfUGibv0f9.svg)](https://asciinema.org/a/6Q7nBIRa9ZLHTjecfUGibv0f9)
+
+## Example of work witn an error
+[![asciicast](https://asciinema.org/a/Zpu13HxHLdLaO6E54YqXms0YI.svg)](https://asciinema.org/a/Zpu13HxHLdLaO6E54YqXms0YI)
+
+## Example debugger
+[![asciicast](https://asciinema.org/a/b4IgBMfoRe67tIpAuF9bleycD.svg)](https://asciinema.org/a/b4IgBMfoRe67tIpAuF9bleycD)
